@@ -1,4 +1,4 @@
-// firebase-config.js
+// firebase-config.js - UNE SEULE FOIS !
 
 const firebaseConfig = {
   apiKey: "AIzaSyDgX33JA663R8Pyvfkww3mvep1n8_d0AxA",
@@ -10,11 +10,7 @@ const firebaseConfig = {
   measurementId: "G-Z8HV42713H"
 };
 
-// Initialisation Firebase
+// Initialisation UNIQUE
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app();
 }
-
-console.log("✅ Firebase initialisé avec succès");
