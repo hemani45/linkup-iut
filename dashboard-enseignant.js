@@ -13,6 +13,10 @@ let departement = "";
 let grade = "";
 let matieres = [];
 
+console.log("🔥 Vérification Firebase Storage:", firebase.storage ? "✅ DISPONIBLE" : "❌ NON DISPONIBLE");
+if (!firebase.storage) {
+    console.error("❌ Firebase Storage non initialisé ! Vérifie l'import du script dans le HTML.");
+}
 // ===== FONCTIONS UTILITAIRES =====
 function getField(data, possibleNames) {
     for (const name of possibleNames) {
@@ -608,40 +612,61 @@ function initialiserFormulaires() {
         const niveaux = getCheckedValues("niveau-doc");
         
         try {
-            // 1. Connexion directe à Google Cloud Storage
-            const storage = firebase.app().storage('gs://linkup-iut.appspot.com');
-            const storageRef = storage.ref();
-            const fileRef = storageRef.child(`documents/${Date.now()}_${fichier.name}`);
-            
-            // 2. Upload le fichier
-            const uploadTask = await fileRef.put(fichier);
-            
-            // 3. Récupérer l'URL de téléchargement
-            const downloadURL = await uploadTask.ref.getDownloadURL();
-            
-            // 4. Enregistrer dans Firestore avec la VRAIE URL
-            await db.collection("documents").add({
-                titre: titre,
-                description: description,
-                lien: downloadURL,
-                nom_fichier: fichier.name,
-                taille_fichier: fichier.size,
-                type_fichier: fichier.type,
-                auteur_id: enseignantId,
-                date: new Date(),
-                filieres_cibles: filieres,
-                niveaux_cibles: niveaux
-            });
-            
-            alert("✅ Document partagé avec succès !");
-            e.target.reset();
-            chargerMesDocuments();
-            updateStats();
-            
-        } catch (error) {
-            console.error("Erreur upload document:", error);
-            alert("Erreur lors du partage : " + error.message);
-        }
+    // 🔴 VÉRIFICATION 1 : Storage disponible ?
+    if (!firebase.storage) {
+        throw new Error("Firebase Storage non initialisé - Vérifie l'import du script dans le HTML");
+    }
+    
+    // 🔴 CORRECTION 2 : Bonne syntaxe Storage
+    const storage = firebase.storage(); // ← CORRECT
+    const storageRef = storage.ref();
+    const fileRef = storageRef.child(`documents/${Date.now()}_${fichier.name}`);
+    
+    console.log("🚀 Upload vers:", fileRef.fullPath);
+    
+    // 2. Upload le fichier
+    const uploadTask = await fileRef.put(fichier);
+    console.log("✅ Upload réussi");
+    
+    // 3. Récupérer l'URL de téléchargement
+    const downloadURL = await uploadTask.ref.getDownloadURL();
+    console.log("🔗 URL obtenue:", downloadURL);
+    
+    // 4. Enregistrer dans Firestore
+    await db.collection("documents").add({
+        titre: titre,
+        description: description,
+        lien: downloadURL,
+        nom_fichier: fichier.name,
+        taille_fichier: fichier.size,
+        type_fichier: fichier.type,
+        auteur_id: enseignantId,
+        date: new Date(),
+        filieres_cibles: filieres,
+        niveaux_cibles: niveaux
+    });
+    
+    alert("✅ Document partagé avec succès !");
+    e.target.reset();
+    chargerMesDocuments();
+    updateStats();
+    
+} catch (error) {
+    console.error("❌ Erreur upload document:", error);
+    
+    // Messages d'erreur explicites
+    if (error.code === 'storage/unauthorized') {
+        alert("⛔ Non autorisé. Vérifie les règles Firebase Storage.");
+    } else if (error.code === 'storage/canceled') {
+        alert("❌ Upload annulé");
+    } else if (error.message.includes('CORS')) {
+        alert("⚠️ Problème CORS ! Configure CORS avec gsutil.");
+    } else if (error.message.includes('Storage non initialisé')) {
+        alert("❌ Firebase Storage non initialisé. Ajoute le script dans le HTML.");
+    } else {
+        alert("❌ Erreur: " + error.message);
+    }
+}
     });
 
     // Formulaire événement (inchangé)
@@ -720,40 +745,61 @@ function initialiserFormulaires() {
         const filieres = getCheckedValues("filiere-emploi");
         const niveaux = getCheckedValues("niveau-emploi");
         
-        try {
-            // 1. Connexion directe à Google Cloud Storage
-            const storage = firebase.app().storage('gs://linkup-iut.appspot.com');
-            const storageRef = storage.ref();
-            const fileRef = storageRef.child(`emplois/${Date.now()}_${fichier.name}`);
-            
-            // 2. Upload le fichier
-            const uploadTask = await fileRef.put(fichier);
-            
-            // 3. Récupérer l'URL de téléchargement
-            const downloadURL = await uploadTask.ref.getDownloadURL();
-            
-            // 4. Enregistrer dans Firestore avec la VRAIE URL
-            await db.collection("emplois_temps").add({
-                titre: titre,
-                lien: downloadURL,
-                nom_fichier: fichier.name,
-                taille_fichier: fichier.size,
-                type_fichier: fichier.type,
-                auteur_id: enseignantId,
-                date: new Date(),
-                filieres_cibles: filieres,
-                niveaux_cibles: niveaux
-            });
-            
-            alert("✅ Emploi du temps publié avec succès !");
-            e.target.reset();
-            chargerMesEmplois();
-            updateStats();
-            
-        } catch (error) {
-            console.error("Erreur upload emploi:", error);
-            alert("Erreur lors de la publication : " + error.message);
-        }
+       try {
+    // 🔴 VÉRIFICATION 1 : Storage disponible ?
+    if (!firebase.storage) {
+        throw new Error("Firebase Storage non initialisé - Vérifie l'import du script dans le HTML");
+    }
+    
+    // 🔴 CORRECTION 2 : Bonne syntaxe Storage
+    const storage = firebase.storage(); // ← CORRECT
+    const storageRef = storage.ref();
+    const fileRef = storageRef.child(`emplois/${Date.now()}_${fichier.name}`);
+    
+    console.log("🚀 Upload vers:", fileRef.fullPath);
+    
+    // 2. Upload le fichier
+    const uploadTask = await fileRef.put(fichier);
+    console.log("✅ Upload réussi");
+    
+    // 3. Récupérer l'URL de téléchargement
+    const downloadURL = await uploadTask.ref.getDownloadURL();
+    console.log("🔗 URL obtenue:", downloadURL);
+    
+    // 4. Enregistrer dans Firestore
+    await db.collection("emplois_temps").add({
+        titre: titre,
+        lien: downloadURL,
+        nom_fichier: fichier.name,
+        taille_fichier: fichier.size,
+        type_fichier: fichier.type,
+        auteur_id: enseignantId,
+        date: new Date(),
+        filieres_cibles: filieres,
+        niveaux_cibles: niveaux
+    });
+    
+    alert("✅ Emploi du temps publié avec succès !");
+    e.target.reset();
+    chargerMesEmplois();
+    updateStats();
+    
+} catch (error) {
+    console.error("❌ Erreur upload emploi:", error);
+    
+    // Messages d'erreur explicites
+    if (error.code === 'storage/unauthorized') {
+        alert("⛔ Non autorisé. Vérifie les règles Firebase Storage.");
+    } else if (error.code === 'storage/canceled') {
+        alert("❌ Upload annulé");
+    } else if (error.message.includes('CORS')) {
+        alert("⚠️ Problème CORS ! Configure CORS avec gsutil.");
+    } else if (error.message.includes('Storage non initialisé')) {
+        alert("❌ Firebase Storage non initialisé. Ajoute le script dans le HTML.");
+    } else {
+        alert("❌ Erreur: " + error.message);
+    }
+}
     });
 
     // Modal d'édition (inchangé)
