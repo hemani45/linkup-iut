@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion Enseignant - LinkUp IUT</title>
+  
+  <!-- Icônes Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Styles spécifiques login enseignant -->
+<style>
+    /* === STYLE SIMPLE SANS NUANCES === */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #ff0000; /* Rouge uni */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: white;
+      position: relative;
+      flex-direction: column; /* Pour aligner logo en haut */
+      padding-top: 100px; /* Espace pour le logo */
+    }
+
+    /* Élément décoratif simple */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 70%, #ff9900 0%, transparent 50%),
+                  radial-gradient(circle at 70% 30%, #ff3333 0%, transparent 50%);
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    /* === LOGO CONTAINER - NOUVEAU === */
+    .logo-container {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: 100px;
+      height: 100px;
+    }
+
+    /* === LOGO === */
+    .logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+      display: block; /* Important pour les images */
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* === CONTAINER INVISIBLE === */
+    .container {
+      /* CONTAINER COMPLÈTEMENT TRANSPARENT */
+      background: transparent !important;
+      backdrop-filter: none !important;
+      
+      /* Pas de box-shadow, pas de fond, pas de bordure */
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      
+      /* Même pas de padding qui créerait un espace visible */
+      padding: 0 !important;
+      
+      /* Le contenu est centré directement */
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      
+      /* Position relative pour z-index */
+      position: relative;
+      z-index: 10;
+    }
+
+    /* === TITRE === */
+    h2 {
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* === FORMULAIRE === */
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* === CHAMPS INPUT === */
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      color: white;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    input:focus {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #ffcc00;
+      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* === BOUTON === */
+    button {
+      width: 100%;
+      padding: 18px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #ffcc00;
+      color: #333;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      background: #ffd633;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 480px) {
+      body {
+        padding-top: 90px;
+      }
+      
+      .logo-container {
+        width: 90px;
+        height: 90px;
+        top: 15px;
+      }
+      
+      .container {
+        width: 95%;
+      }
+      
+      h2 {
+        font-size: 1.7rem;
+        margin-bottom: 25px;
+      }
+      
+      input, button {
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      body {
+        padding-top: 80px;
+      }
+      
+      .logo-container {
+        width: 80px;
+        height: 80px;
+        top: 10px;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      input, button {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* === FOCUS ACCESSIBILITÉ === */
+    input:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #ffcc00;
+      outline-offset: 2px;
+    }
+
+    /* Animation d'entrée subtile */
+    .logo, h2, #login-form {
+      animation: fadeIn 0.6s ease-out backwards;
+    }
+
+    h2 { animation-delay: 0.1s; }
+    #login-form { animation-delay: 0.2s; }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Pour s'assurer qu'aucune ombre ou bordure ne traîne */
+    * {
+      box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+    }
+    
+    /* === STYLES POUR LES NOUVEAUX ÉLÉMENTS === */
+    .forgot-password {
+      text-align: center;
+      margin: 15px 0;
+    }
+    
+    .forgot-password a {
+      color: #ffcc00; /* Jaune */
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: opacity 0.3s;
+    }
+    
+    .forgot-password a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+    
+    .switch-login {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .switch-login a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .switch-login a:hover {
+      text-decoration: underline;
+    }
+    
+    /* NOUVEAU : Section inscription enseignant */
+    .signup-section {
+      text-align: center;
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .signup-section p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .signup-section .btn-signup {
+      display: inline-block;
+      padding: 12px 25px;
+      background: rgba(255, 204, 0, 0.2);
+      color: #ffcc00;
+      border: 2px solid #ffcc00;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .signup-section .btn-signup:hover {
+      background: #ffcc00;
+      color: #333;
+      transform: translateY(-2px);
+    }
+    
+    .contact-admin {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .contact-admin a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    
+    .contact-admin a:hover {
+      text-decoration: underline;
+    }
+    
+    #login-message {
+      margin-bottom: 20px;
+      padding: 12px 15px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 0.9rem;
+      font-weight: 500;
+      animation: messageFadeIn 0.3s ease;
+    }
+    
+    @keyframes messageFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #login-message.error {
+      background: rgba(255, 0, 0, 0.2);
+      border: 1px solid rgba(255, 0, 0, 0.5);
+      color: white;
+    }
+    
+    #login-message.success {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid rgba(0, 255, 0, 0.5);
+      color: white;
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .fa-spinner {
+      margin-right: 8px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .fa-chalkboard-teacher {
+      margin-right: 8px;
+    }
+    
+    .input-group {
+      position: relative;
+      width: 100%;
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      z-index: 1;
+    }
+    
+    .input-group input {
+      padding-left: 45px;
+    }
+  </style>
+  <!-- Métadonnées PWA -->
+<meta name="theme-color" content="#ffcc00">
+<meta name="description" content="LinkUp IUT - Plateforme de gestion académique et associative">
+
+<!-- Icône (favicon) -->
+<link rel="icon" type="image/png" href="./favicon.ico">
+
+<!-- Manifest PWA -->
+<link rel="manifest" href="./manifest.json">
+
+<!-- Apple Touch Icon (pour iOS) -->
+<link rel="apple-touch-icon" href="./logo.png">
+</head>
+<body>
+
+  <!-- Logo en haut -->
+  <div class="logo-container">
+    <img src="./logo.png" alt="Logo IUT" class="logo" />
+  </div>
+
+  <div class="container">
+    <h2>Connexion <span style="color: #ffcc00;">Enseignant</span></h2>
+    
+    <!-- Message d'erreur/succès -->
+    <div id="login-message" class="message" style="display: none;"></div>
+    
+    <form id="login-form">
+      <div class="input-group">
+        <div class="input-icon"><i class="fas fa-envelope"></i></div>
+        <input type="email" id="email" placeholder="Email académique" required />
+      </div>
+      
+      <div class="input-group">
+        <div class="input-icon"><i class="fas fa-lock"></i></div>
+        <input type="password" id="password" placeholder="Mot de passe" required />
+      </div>
+      
+      <button type="submit" id="login-btn">
+        <i class="fas fa-chalkboard-teacher"></i> Se connecter
+      </button>
+    </form>
+    
+    <div class="forgot-password">
+      <a href="#" id="forgot-password-link">Mot de passe oublié ?</a>
+    </div>
+    
+    <!-- NOUVEAU : Section inscription avec code secret -->
+    <div class="signup-section">
+      <p><strong>Nouvel enseignant ?</strong></p>
+      <p>Obtenez votre code secret auprès de l'administration, puis inscrivez-vous :</p>
+      <a href="inscription-enseignant.html" class="btn-signup">
+        <i class="fas fa-user-plus"></i> Inscription Enseignant
+      </a>
+    </div>
+    
+    <div class="switch-login">
+      <a href="login.html">← Connexion étudiant</a>
+    </div>
+    
+    <div class="contact-admin">
+      Besoin d'un code d'inscription ? <a href="mailto:admin@iut-ngaoundere.cm?subject=Demande de code enseignant">Contactez l'administrateur</a>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (même version que les autres pages) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Config Firebase -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Script spécifique login enseignant -->
+  <script>
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const messageDiv = document.getElementById("login-message");
+      const loginBtn = document.getElementById("login-btn");
+
+      // Reset message
+      messageDiv.style.display = 'none';
+      messageDiv.className = 'message';
+
+      // Validation
+      if (!email || !password) {
+        messageDiv.textContent = "❌ Veuillez remplir tous les champs.";
+        messageDiv.className = "message error";
+        messageDiv.style.display = "block";
+        return;
+      }
+
+      // Désactiver bouton
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const uid = userCredential.user.uid;
+
+        // Vérifier que c'est bien un enseignant
+        const docEnseignant = await db.collection("enseignants").doc(uid).get();
+        
+        if (docEnseignant.exists) {
+          // Message succès
+          messageDiv.textContent = "✅ Connexion réussie ! Redirection...";
+          messageDiv.className = "message success";
+          messageDiv.style.display = "block";
+          
+          // Redirection après 1s
+          setTimeout(() => {
+            window.location.href = "dashboard-enseignant.html";
+          }, 1000);
+          
+        } else {
+          // Déconnecter si ce n'est pas un enseignant
+          await auth.signOut();
+          messageDiv.textContent = "❌ Ce compte n'est pas un compte enseignant.";
+          messageDiv.className = "message error";
+          messageDiv.style.display = "block";
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Se connecter';
+        }
+        
+      } catch (error) {
+        console.error("Erreur connexion:", error);
+        
+        // Messages d'erreur spécifiques
+        let errorMessage = "❌ Erreur de connexion.";
+        
+        if (error.code === 'auth/user-not-found') {
+          errorMessage = "❌ Aucun compte avec cet email.";
+        } else if (error.code === 'auth/wrong-password') {
+          errorMessage = "❌ Mot de passe incorrect.";
+        } else if (error.code === 'auth/too-many-requests') {
+          errorMessage = "❌ Trop de tentatives. Réessayez plus tard.";
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = "❌ Format d'email invalide.";
+        }
+        
+        messageDiv.textContent = errorMessage;
+        messageDiv.className = "message error";
+        messageDiv.style.display = "block";
+        
+        // Réactiver bouton
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-chalkboard-teacher"></i> Se connecter';
+      }
+    });
+
+    // Mot de passe oublié
+    document.getElementById("forgot-password-link").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = prompt("Entrez votre email pour réinitialiser le mot de passe :");
+      
+      if (email && email.includes("@")) {
+        try {
+          await auth.sendPasswordResetEmail(email);
+          alert("📧 Email de réinitialisation envoyé ! Vérifiez votre boîte mail.");
+        } catch (error) {
+          alert("❌ Erreur : " + error.message);
+        }
+      }
+    });
+  </script>
+<!-- Service Worker -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker enregistré avec succès');
+                })
+                .catch(error => {
+                    console.log('Échec enregistrement ServiceWorker:', error);
+                });
+        });
+    }
+</script>
+</body>
+</html>

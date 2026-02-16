@@ -1,0 +1,23 @@
+{
+  "name": "LinkUp IUT",
+  "short_name": "LinkUp",
+  "description": "Plateforme de gestion académique et associative de l'IUT de Ngaoundéré",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#d62828",
+  "theme_color": "#ffcc00",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

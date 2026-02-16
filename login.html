@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion Étudiant - LinkUp IUT</title>
+  
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Icônes Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Styles spécifiques login étudiant -->
+  <style>
+        /* === PALETTE IUT === */
+    :root {
+      --rouge-iut: #d62828;
+      --jaune-iut: #ffd166;
+      --blanc: #ffffff;
+    }
+
+    /* === RESET === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* === LOGO EN HAUT === */
+    .logo-container {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: 80px;
+      height: 80px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      padding: 12px;
+      background: var(--blanc);
+      border: 2px solid var(--rouge-iut);
+      transition: all 0.3s ease;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* === BODY === */
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, 
+        var(--rouge-iut) 0%,
+        var(--jaune-iut) 50%,
+        var(--rouge-iut) 100%);
+      background-size: 200% 200%;
+      animation: gradientFlow 8s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: var(--blanc);
+      position: relative;
+    }
+
+    @keyframes gradientFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* === CONTAINER === */
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      margin-top: 100px;
+    }
+
+    /* === TITRE === */
+    h2 {
+      margin-bottom: 25px;
+      color: var(--blanc);
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* === FORMULAIRE === */
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--blanc);
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input:focus {
+      border-color: var(--jaune-iut);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* === BOUTON === */
+    button {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: var(--rouge-iut);
+      color: var(--blanc);
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #b71c1c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* === LIEN INSCRIPTION === */
+    .signup-link {
+      margin-top: 20px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+    }
+
+    .signup-link a {
+      color: var(--jaune-iut);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* === RESPONSIVE === */
+
+    /* Tablettes */
+    @media (max-width: 768px) {
+      .container {
+        max-width: 350px;
+        padding: 25px;
+        margin-top: 90px;
+      }
+      
+      .logo-container {
+        width: 70px;
+        height: 70px;
+        top: 15px;
+      }
+      
+      h2 {
+        font-size: 1.6rem;
+      }
+      
+      input, button {
+        padding: 14px;
+      }
+    }
+
+    /* Mobiles */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .container {
+        max-width: 100%;
+        padding: 20px;
+        margin-top: 80px;
+        border-radius: 15px;
+      }
+      
+      .logo-container {
+        width: 60px;
+        height: 60px;
+        top: 10px;
+      }
+      
+      .logo {
+        padding: 10px;
+      }
+      
+      h2 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+      }
+      
+      input, button {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+      
+      .signup-link {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Petits mobiles */
+    @media (max-width: 350px) {
+      .container {
+        padding: 15px;
+        margin-top: 70px;
+      }
+      
+      .logo-container {
+        width: 50px;
+        height: 50px;
+        top: 8px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      input, button {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Grands écrans */
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 450px;
+        padding: 35px;
+      }
+      
+      .logo-container {
+        width: 90px;
+        height: 90px;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Mode paysage mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        margin-top: 60px;
+        padding: 15px;
+      }
+      
+      #login-form {
+        gap: 10px;
+      }
+      
+      input, button {
+        padding: 10px;
+      }
+    }
+    /* Styles pour les nouveaux éléments seulement */
+    .forgot-password {
+      text-align: center;
+      margin: 15px 0;
+    }
+    
+    .forgot-password a {
+      color: var(--jaune-iut);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: opacity 0.3s;
+    }
+    
+    .forgot-password a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+    
+    .switch-login {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .switch-login a {
+      color: var(--jaune-iut);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .switch-login a:hover {
+      text-decoration: underline;
+    }
+    
+    #login-message {
+      margin-bottom: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .fa-spinner {
+      margin-right: 8px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <!-- Métadonnées PWA -->
+<meta name="theme-color" content="#ffcc00">
+<meta name="description" content="LinkUp IUT - Plateforme de gestion académique et associative">
+
+<!-- Icône (favicon) -->
+<link rel="icon" type="image/png" href="./favicon.ico">
+
+<!-- Manifest PWA -->
+<link rel="manifest" href="./manifest.json">
+
+<!-- Apple Touch Icon (pour iOS) -->
+<link rel="apple-touch-icon" href="./logo.png">
+</head>
+<body>
+
+  <!-- Logo en haut -->
+  <div class="logo-container">
+    <img src="./logo.png" alt="Logo IUT" class="logo" />
+  </div>
+
+  <div class="container">
+    <h2>Connexion <span>Étudiant</span></h2>
+    
+    <!-- Message d'erreur/succès -->
+    <div id="login-message" class="message" style="display: none;"></div>
+    
+    <form id="login-form">
+      <div class="input-group">
+        <div class="input-icon"><i class="fas fa-envelope"></i></div>
+        <input type="email" id="email" placeholder="Email universitaire" required />
+      </div>
+      
+      <div class="input-group">
+        <div class="input-icon"><i class="fas fa-lock"></i></div>
+        <input type="password" id="password" placeholder="Mot de passe" required />
+      </div>
+      
+      <button type="submit" id="login-btn">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </button>
+    </form>
+    
+    <div class="forgot-password">
+      <a href="#" id="forgot-password-link">Mot de passe oublié ?</a>
+    </div>
+    
+    <div class="switch-login">
+      <a href="login-enseignant.html">Connexion enseignant</a>
+    </div>
+    
+    <p class="signup-link">
+      Pas encore inscrit ? <a href="inscription.html">Créez un compte</a>
+    </p>
+  </div>
+
+  <!-- Firebase SDK (version compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Config Firebase -->
+  <script src="firebase-config.js"></script>
+
+  <!-- Script spécifique login étudiant -->
+  <script>
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const messageDiv = document.getElementById("login-message");
+      const loginBtn = document.getElementById("login-btn");
+
+      // Reset message
+      messageDiv.style.display = 'none';
+      messageDiv.className = 'message';
+
+      // Validation
+      if (!email || !password) {
+        messageDiv.textContent = "❌ Veuillez remplir tous les champs.";
+        messageDiv.className = "message error";
+        messageDiv.style.display = "block";
+        return;
+      }
+
+      // Désactiver bouton
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const uid = userCredential.user.uid;
+
+        // Vérifier que c'est bien un étudiant
+        const docEtudiant = await db.collection("etudiants").doc(uid).get();
+        
+        if (docEtudiant.exists) {
+          // Message succès
+          messageDiv.textContent = "✅ Connexion réussie ! Redirection...";
+          messageDiv.className = "message success";
+          messageDiv.style.display = "block";
+          
+          // Redirection après 1s
+          setTimeout(() => {
+            window.location.href = "dashboard-etudiant.html";
+          }, 1000);
+          
+        } else {
+          // Déconnecter si ce n'est pas un étudiant
+          await auth.signOut();
+          messageDiv.textContent = "❌ Ce compte n'est pas un compte étudiant.";
+          messageDiv.className = "message error";
+          messageDiv.style.display = "block";
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+        }
+        
+      } catch (error) {
+        console.error("Erreur connexion:", error);
+        
+        // Messages d'erreur spécifiques
+        let errorMessage = "❌ Erreur de connexion.";
+        
+        if (error.code === 'auth/user-not-found') {
+          errorMessage = "❌ Aucun compte avec cet email.";
+        } else if (error.code === 'auth/wrong-password') {
+          errorMessage = "❌ Mot de passe incorrect.";
+        } else if (error.code === 'auth/too-many-requests') {
+          errorMessage = "❌ Trop de tentatives. Réessayez plus tard.";
+        } else if (error.code === 'auth/invalid-email') {
+          errorMessage = "❌ Format d'email invalide.";
+        }
+        
+        messageDiv.textContent = errorMessage;
+        messageDiv.className = "message error";
+        messageDiv.style.display = "block";
+        
+        // Réactiver bouton
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter';
+      }
+    });
+
+    // Mot de passe oublié
+    document.getElementById("forgot-password-link").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = prompt("Entrez votre email pour réinitialiser le mot de passe :");
+      
+      if (email && email.includes("@")) {
+        try {
+          await auth.sendPasswordResetEmail(email);
+          alert("📧 Email de réinitialisation envoyé ! Vérifiez votre boîte mail.");
+        } catch (error) {
+          alert("❌ Erreur : " + error.message);
+        }
+      }
+    });
+  </script>
+<!-- Service Worker -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker enregistré avec succès');
+                })
+                .catch(error => {
+                    console.log('Échec enregistrement ServiceWorker:', error);
+                });
+        });
+    }
+</script>
+</body>
+</html>
